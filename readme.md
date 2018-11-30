@@ -1,0 +1,1 @@
+Console application to calculate depreciation and display asset information during its useful life in table format. The application supports four different methods: straight-line, double declining, sum-of-year-digits, net-value based, fix rate method.
