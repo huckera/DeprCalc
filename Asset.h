@@ -17,8 +17,6 @@ class Asset {
 
     Asset (float a, float b, int c) : cost (a), s_value (b), u_life (c), net_value (a) {curr_year=0; curr_depr=0; cum_depr=0;}
 
-    //friend std::ostream& operator<<(std::ostream&, const Asset&);
-
     };
 
 //display asset depreciation data
