@@ -5,28 +5,33 @@
 
 class Asset {
 
-
-   public:
     const float cost; //cost of asset
     float s_value; //salvage value
     int u_life; //useful life in years
+
+   public:
     int curr_year; //spent life in years
     float curr_depr; //current year depreciation
     float cum_depr; //cumulated_depreciation
-    float net_value; //current net value
 
-    Asset (float a, float b, int c) : cost (a), s_value (b), u_life (c), net_value (a) {curr_year=0; curr_depr=0; cum_depr=0;}
+    Asset (float a, float b, int c) : cost (a), s_value (b), u_life (c) {curr_year=0; curr_depr=0; cum_depr=0;};
+
+    float getcost () {return cost;}
+    float gets_value () {return s_value;}
+    int getu_life () {return u_life;}
+    float getnet_value() {return cost - cum_depr;}
+
 
     };
 
 //display asset depreciation data
 
-std::ostream& operator<<(std::ostream& o, const Asset& a)
+std::ostream& operator<<(std::ostream& o, Asset& a)
     {
     o << std::setw(5) << std::right << a.curr_year
     << std::setw(WIDTH) << a.curr_depr
     << std::setw(WIDTH) << a.cum_depr
-    << std::setw(WIDTH) << a.net_value << std::endl;
+    << std::setw(WIDTH) << a.getnet_value() << std::endl;
 
     return o;
     };
@@ -59,12 +64,11 @@ void depr_table (Asset& a, int method, float mult)
             disp_title();
             std::cout << a;
 
-            for (int i = 1;i<=a.u_life;i++)
+            for (int i = 1;i<=a.getu_life();i++)
             {
             a.curr_year++;
-            a.curr_depr = (a.cost - a.s_value)/a.u_life;
+            a.curr_depr = (a.getcost() - a.gets_value())/a.getu_life();
             a.cum_depr += a.curr_depr;
-            a.net_value = a.cost - a.cum_depr;
 
             std::cout << a;
             }
@@ -77,14 +81,13 @@ void depr_table (Asset& a, int method, float mult)
             disp_title();
             std::cout << a;
 
-            float sod = (pow(a.u_life, 2.0) + a.u_life)/2;
-            float sdv = (a.cost - a.s_value) / sod;
-            for (int i = 1;i<=a.u_life;i++)
+            float sod = (pow(a.getu_life(), 2.0) + a.getu_life())/2;
+            float sdv = (a.getcost() - a.gets_value()) / sod;
+            for (int i = 1;i<=a.getu_life();i++)
             {
             a.curr_year++;
-            a.curr_depr = sdv * ((a.u_life+1)-i);
+            a.curr_depr = sdv * ((a.getu_life()+1)-i);
             a.cum_depr += a.curr_depr;
-            a.net_value = a.cost - a.cum_depr;
 
             std::cout << a;
             }
@@ -99,12 +102,11 @@ void depr_table (Asset& a, int method, float mult)
             disp_title();
             std::cout << a;
 
-            for (int i = 1;i<=a.u_life;i++)
+            for (int i = 1;i<=a.getu_life();i++)
             {
             a.curr_year++;
-            a.curr_depr = a.net_value * (1 - (pow((a.s_value/a.cost),(1/(float)a.u_life))));
+            a.curr_depr = a.getnet_value() * (1 - (pow((a.gets_value()/a.getcost()),(1/(float)a.getu_life()))));
             a.cum_depr += a.curr_depr;
-            a.net_value = a.cost - a.cum_depr;
 
             std::cout << a;
             }
@@ -119,12 +121,11 @@ void depr_table (Asset& a, int method, float mult)
             disp_title();
             std::cout << a;
 
-            for (int i = 1;i<=a.u_life;i++)
+            for (int i = 1;i<=a.getu_life();i++)
             {
             a.curr_year++;
-            a.curr_depr = (a.net_value * mult)/a.u_life;
+            a.curr_depr = (a.getnet_value() * mult)/a.getu_life();
             a.cum_depr += a.curr_depr;
-            a.net_value = a.cost - a.cum_depr;
 
             std::cout << a;
             }
